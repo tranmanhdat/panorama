@@ -60,43 +60,42 @@ class VideoScreenshot(object):
 		# Display frames in main program
 		while True:
 			if self.status and self.status2:
-				if self.get_image:
-					gray1 = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-					gray2 = cv2.cvtColor(self.frame2, cv2.COLOR_BGR2GRAY)
-					pattern_size = (4, 6)
-					ret1, corners1 = cv2.findChessboardCorners(gray1, pattern_size,
-					                                           None)
-					ret2, corners2 = cv2.findChessboardCorners(gray2, pattern_size,
-					                                           None)
-					img1 = cv2.putText(gray1, str(ret1), (50, 50),
-					                   cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2,
-					                   cv2.LINE_AA)
-					img2 = cv2.putText(gray2, str(ret2), (50, 50),
-					                   cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2,
-					                   cv2.LINE_AA)
-					cv2.imshow('img1', img1)
-					cv2.imshow('img2', img2)
-					if ret1 and ret2:
-						cv2.imwrite('image_left.png', self.frame)
-						cv2.imwrite('image_right.png', self.frame2)
-						self.capture.release()
-						self.capture2.release()
-						cv2.destroyAllWindows()
-						exit(1)
-				else:
+				# if self.get_image:
+				# 	# gray1 = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+				# 	# gray2 = cv2.cvtColor(self.frame2, cv2.COLOR_BGR2GRAY)
+				# 	# pattern_size = (4, 6)
+				# 	# ret1, corners1 = cv2.findChessboardCorners(gray1, pattern_size,
+				# 	#                                            None)
+				# 	# ret2, corners2 = cv2.findChessboardCorners(gray2, pattern_size,
+				# 	#                                            None)
+				# 	# img1 = cv2.putText(gray1, str(ret1), (50, 50),
+				# 	#                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2,
+				# 	#                    cv2.LINE_AA)
+				# 	# img2 = cv2.putText(gray2, str(ret2), (50, 50),
+				# 	#                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2,
+				# 	#                    cv2.LINE_AA)
+				# 	cv2.imshow('img1', img1)
+				# 	cv2.imshow('img2', img2)
+				# 	if ret1 and ret2:
+				# 		cv2.imwrite('image_left.png', self.frame)
+				# 		cv2.imwrite('image_right.png', self.frame2)
+				# 		self.capture.release()
+				# 		self.capture2.release()
+				# 		cv2.destroyAllWindows()
+				# 		exit(1)
+				# else:
+				cv2.imshow('left', self.frame)
+				cv2.imshow('right', self.frame2)
 
-					cv2.imshow('left', self.frame)
-					cv2.imshow('right', self.frame2)
-
-			# Press Q on keyboard to stop recording
-			key = cv2.waitKey(1)
-			if key == ord('q'):
-				cv2.imwrite('image_left.png', self.frame)
-				cv2.imwrite('image_right.png', self.frame2)
-				self.capture.release()
-				self.capture2.release()
-				cv2.destroyAllWindows()
-				exit(1)
+				# Press Q on keyboard to stop recording
+				key = cv2.waitKey(1)
+				if key == ord('q'):
+					cv2.imwrite('image_left.png', self.frame)
+					cv2.imwrite('image_right.png', self.frame2)
+					self.capture.release()
+					self.capture2.release()
+					cv2.destroyAllWindows()
+					exit(1)
 
 
 if __name__ == '__main__':

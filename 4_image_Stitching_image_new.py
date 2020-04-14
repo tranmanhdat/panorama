@@ -48,7 +48,7 @@ def main(argv1,argv2):
     img2 = cv2.imread(argv2)
     H = np.load("H_matrix.npy")
 
-    src_point = (250, 400)
+    src_point = (300, 410)
     src_point_np = np.concatenate([np.array(src_point), np.array([1])])
     src_point_np = np.array([src_point_np]).T
     color = (0, 0, 255)
