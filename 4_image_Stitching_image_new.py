@@ -104,9 +104,7 @@ def check_overlap(human_locations, poly_left, poly_right, matrix_tranform):
         else:
             human_in_left.append(human_location)
     for human_location in human_in_right:
-        human_location_shift = human_location
-        human_location_shift[0] = human_location[0]-width
-        if not point_inside_polygon(human_location_shift, poly_right):
+        if not point_inside_polygon(human_location, poly_right):
             identity[ID] = [human_location]
             ID = ID + 1
         else:
@@ -125,47 +123,64 @@ def check_overlap(human_locations, poly_left, poly_right, matrix_tranform):
         human_reference_location = reference_point(human_location,
                                                    matrix_tranform)
         for human_location_dst in human_overlap_left:
-            if is_near(human_location_dst,human_reference_location,15):
+            if is_near(human_location_dst, human_reference_location, 15):
                 same_human.append(human_location_dst)
                 human_overlap_left.remove(human_location_dst)
         identity[ID] = same_human
-        ID = ID +1
-    while len(human_overlap_left)>0:
+        ID = ID + 1
+    while len(human_overlap_left) > 0:
         identity[ID] = [human_overlap_left.pop()]
-        ID = ID +1
+        ID = ID + 1
     return identity
+
+
 def main(argv1, argv2):
     img1 = cv2.imread(argv1)
     img2 = cv2.imread(argv2)
     H = np.load("H_matrix.npy")
 
-    src_point = (300, 410)
+    src_point = (21, 349)
     src_point_np = np.concatenate([np.array(src_point), np.array([1])])
     src_point_np = np.array([src_point_np]).T
     color = (0, 0, 255)
 
     # draw point in right hand side
-    cv2.circle(img2, src_point, 5, color, -1)
+    # cv2.circle(img2, src_point, 5, color, -1)
     img2 = drawROI(img2, image2_kp)
     # cv2.imshow("right", img2)
 
-    dst_point_np = np.matmul(H, src_point_np)
     # dst_point_np = cv2.perspectiveTransform(np.array([np.array([np.array(src_point)])]).astype(
     #     np.float32), H)
     # dst_point_np = cv2.warpPerspective(
     #         np.array([np.array([np.array(src_point)])]).astype(
     #                     np.float32), H, (1000,1000))
-    print(dst_point_np)
+    # x_src, y_src = src_point[0], src_point[1]
+    # x_des = (H[0][0] * x_src + H[0][1] * y_src +
+    #          H[0][2]) / (
+    #                 H[2][0] * x_src + H[2][
+    #             1] * y_src + H[2][2])
+    # y_des = (H[1][0] * x_src + H[1][1] * y_src +
+    #          H[1][2]) / (
+    #                 H[2][0] * x_src + H[2][
+    #             1] * y_src + H[2][2])
+    #
+    # dst_point_np = [[x_des], [y_des]]
+    # dst_point_np = reference_point(src_point, H)
+
+    dst_point_np = np.matmul(H, src_point_np)
     dst_point_np[0][0] = dst_point_np[0][0] / dst_point_np[2][0]
     dst_point_np[1][0] = dst_point_np[1][0] / dst_point_np[2][0]
-    print(dst_point_np.shape)
+
+
+    print(dst_point_np)
+    # print(dst_point_np.shape)
     # cv2.imshow('dst', dst_point_np)
     # cv2.waitKey(0)
     dst_point = (int(dst_point_np[0][0]), int(dst_point_np[1][0]))
     # print(dst_point)
 
     # draw point in left hand side
-    cv2.circle(img1, dst_point, 5, color, -1)
+    # cv2.circle(img1, dst_point, 5, color, -1)
     img1 = drawROI(img1, image1_kp)
     # cv2.imshow("left", img1)
 
@@ -173,7 +188,7 @@ def main(argv1, argv2):
     result[:, 0:width, :] = img1
     result[:, width:, :] = img2
     # result = drawROI(result, image2_kp_shift)
-    cv2.imshow('concat', result)
+    # cv2.imshow('concat', result)
     # final=blending(img1, img2, H)
     # cv2.imwrite("panorama.png", final)
     # cv2.imshow('panorama', final)
@@ -181,9 +196,9 @@ def main(argv1, argv2):
 
 
 if __name__ == '__main__':
-    # main("image_left.png", "image_right.png")
-    matrix_tranform = np.load('H_matrix.npy')
+    main("image_left.png", "image_right.png")
+    # matrix_tranform = np.load('H_matrix.npy')
     # do detect
-    human_locations = []
+    # human_locations = []
     # do identity
-    result = check_overlap(human_locations,image1_kp, image2_kp, matrix_tranform)
+    # result = check_overlap(human_locations,image1_kp, image2_kp, matrix_tranform)

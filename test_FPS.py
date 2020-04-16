@@ -41,8 +41,9 @@ def blending(img1,img2, H):
     rows, cols = np.where(result[:, :, 0] != 0)
     min_row, max_row = min(rows), max(rows) + 1
     min_col, max_col = min(cols), max(cols) + 1
-    # final_result = result[min_row:max_row, min_col:max_col, :]
-    final_result = result[:,:]
+    final_result = result[min_row:max_row, min_col:max_col, :]
+    # print(max_row, max_col)
+    # final_result = result[:,:]
     final_result = final_result.astype(np.uint8)
     return final_result
 
@@ -57,7 +58,7 @@ def main(argv1,argv2):
 
     final=blending(img1, img2, H)
     # final= cv2.resize(final,(int(final.shape[1]), int(final.shape[0])))
-    cv2.imwrite("panorama.jpg", final)
+    cv2.imwrite("panorama.png", final)
     cv2.imshow('panorama', final)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

@@ -125,7 +125,7 @@ class VideoScreenshot(object):
 		result[:,self.frame_width - self.smoothing_window_size:self.frame_width,:] = merger_left + merger_right
 
 		min_row, max_row = 0, 480
-		min_col, max_col = 0, 900
+		min_col, max_col = 0, 947
 
 		final_result = result[min_row:max_row, min_col:max_col, :]
 		# final_result = trim(result)
