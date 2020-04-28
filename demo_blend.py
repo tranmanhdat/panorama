@@ -118,14 +118,13 @@ class VideoScreenshot(object):
 
 		panorama2 = cv2.warpPerspective(self.frame2, self.H,
 		                                (width_panorama, height_panorama))
-		cv2.imshow('warpPerspective',panorama2)
 		result[:, self.frame_width:, :] = panorama2[:, self.frame_width:, :]
 		merger_right = panorama2[:,self.frame_width - self.smoothing_window_size:self.frame_width,:] * self.mask_right
 
 		result[:,self.frame_width - self.smoothing_window_size:self.frame_width,:] = merger_left + merger_right
 
-		min_row, max_row = 0, 480
-		min_col, max_col = 0, 947
+		min_row, max_row = 0, self.config.getint('args','max_row')
+		min_col, max_col = 0, self.config.getint('args','max_col')
 
 		final_result = result[min_row:max_row, min_col:max_col, :]
 		# final_result = trim(result)
@@ -154,8 +153,9 @@ if __name__ == '__main__':
 	rtsp_stream_link = 'your stream link!'
 
 	video_stream_widget = VideoScreenshot(
-			"rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream",
-			"rtsp://fitmta:fitmta@192.168.1.120:554/av0_0")
+			"rtsp://fitmta:fitmta@192.168.1.120:554/av0_0",
+			"rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream")
+	time.sleep(1)
 	# video_stream_widget.thread.join()
 	# video_stream_widget.thread2.join()
 	# while True:

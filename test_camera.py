@@ -62,8 +62,8 @@ if __name__ == '__main__':
 	# # try:
 	# video_stream_widget.show_frame()
 # video_stream_widget.stitch_image()
-	cap = cv2.VideoCapture('rtsp://fitmta:fitmta@192.168.1.120:554/av0_0')
-# 	cap = cv2.VideoCapture('rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream')
+# 	cap = cv2.VideoCapture('rtsp://fitmta:fitmta@192.168.1.120:554/av0_0')
+	cap = cv2.VideoCapture('rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream')
 
 	while True:
 

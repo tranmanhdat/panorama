@@ -69,19 +69,22 @@ class VideoScreenshot(object):
 	def update(self):
 		while True:
 			if self.status1 and self.status2:
-				frame1 = self.frame1
-				frame2 = self.frame2
+				# frame1 = self.frame1
+				# frame2 = self.frame2
 				# frame1 = self.drawROI(frame1, image1_kp)
 				# frame2 = self.drawROI(frame2, image2_kp)
-				self.frame[:, 0:self.frame_width, :] = frame1
-				self.frame[:, self.frame_width:, :] = frame2
+				# self.frame[:, 0:self.frame_width, :] = frame1
+				# self.frame[:, self.frame_width:, :] = frame2
 				self.status = True
 
 	def show_frame(self):
 		# ID = 0
-		out = cv2.VideoWriter('output_concat.avi',
-		                      cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 10,
-		                      (self.frame_width*2, self.frame_height))
+		out_l = cv2.VideoWriter('output_left.avi',
+		                      cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30,
+		                      (self.frame_width, self.frame_height))
+		out_r = cv2.VideoWriter('output_right.avi',
+		                      cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), 30,
+		                      (self.frame_width, self.frame_height))
 		# Display frames in main program
 		while True:
 			# if self.status1 and self.status2:
@@ -96,14 +99,17 @@ class VideoScreenshot(object):
 			# 	# # out.write(final)
 			# 	# cv2.imshow('result', final)
 			if self.status:
-				cv2.imshow('concat Image', self.frame)
-				out.write(self.frame)
+				cv2.imshow('Left', self.frame1)
+				cv2.imshow('right', self.frame2)
+				out_l.write(self.frame1)
+				out_r.write(self.frame2)
 			# Press Q on keyboard to stop recording
 			key = cv2.waitKey(1)
 			if key == ord('q'):
 				self.capture.release()
 				self.capture2.release()
-				out.release()
+				out_l.release()
+				out_r.release()
 				cv2.destroyAllWindows()
 				exit(1)
 	def drawROI(self, img, points):
@@ -112,11 +118,9 @@ class VideoScreenshot(object):
 		img = cv2.line(img, (points[-1][0],points[-1][1]), (points[0][0],points[0][1]), (0, 0, 255), 2 )
 		return img
 if __name__ == '__main__':
-	rtsp_stream_link = 'your stream link!'
-
 	video_stream_widget = VideoScreenshot(
-			"rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream",
-			"rtsp://fitmta:fitmta@192.168.1.120:554/av0_0")
+			"rtsp://fitmta:fitmta@192.168.1.120:554/av0_0",
+			"rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream")
 	video_stream_widget.open()
 	time.sleep(1)
 	video_stream_widget.start()

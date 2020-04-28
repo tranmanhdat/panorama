@@ -105,8 +105,8 @@ if __name__ == '__main__':
 	# 		"rtsp://khanh29bk:Admin123@192.168.0.11/Src/MediaInput/h264/stream_1/ch_",
 	# 		"rtsp://khanh29bk:Admin123@192.168.0.12/Src/MediaInput/h264/stream_1/ch_")
 	video_stream_widget = VideoScreenshot(
-					"rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream",
 					"rtsp://fitmta:fitmta@192.168.1.120:554/av0_0",
+					"rtsp://192.168.1.10:554/user=fitmta_password=fitmta_channel=1_stream=0.sdp?real_stream",
 					True)
 	time.sleep(1)
 	# video_stream_widget.thread.join()
